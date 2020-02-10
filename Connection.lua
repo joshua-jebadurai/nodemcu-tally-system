@@ -83,16 +83,16 @@ function serverSetup ()
 end
 
 function onConnReceive (sck, payload)
-    lines = {}
-    for s in payload:gmatch("[^\r\n]+") do
-        --print (s);
-        table.insert(lines, s)
-    end
-    --for key,value in pairs(lines) do print(key,value) end
-    print (lines[1])
-    postparse={string.find(payload,"mcu_do=")}
+  lines = {}
+  for s in payload:gmatch("[^\r\n]+") do
+      --print (s);
+      table.insert(lines, s)
+  end
+  --for key,value in pairs(lines) do print(key,value) end
+  print (lines[1])
+  postparse={string.find(payload,"mcu_do=")}
 
-    if (#postparse == 0) then
+  if (#postparse == 0) then
     sck:send('HTTP/1.1 200 OK\n\n')
     sck:send([[<!DOCTYPE html>
     <html>
@@ -122,13 +122,11 @@ function onConnReceive (sck, payload)
     <p>If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php".</p>
     
     </body>
-    </html>]]) else
-    
+    </html>]])
+  else
     parsed = mysplit (string.gsub(lines[1], "mcu_do=", ""), "&")
     normalMode(parsed[1], parsed[2], parsed[3], parsed[4], parsed[5])
-    --normalMode ()
-end
-        
+  end
 end
 
 function onConnSent (sck, payload)
@@ -146,8 +144,8 @@ function mysplit (inputstr, sep)
         return t
 end
 
-setupMode()
---normalMode ('Sam House 2', 'Viewsonic231', '192.168.1.118', '255.255.255.0', '192.168.1.1')
+--setupMode()
+normalMode ('Sam House 2', 'Viewsonic231', '192.168.1.118', '255.255.255.0', '192.168.1.1')
 
 
 
